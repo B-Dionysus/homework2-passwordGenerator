@@ -5,6 +5,11 @@ var passUpperCase=false;
 var passNumeric=false;
 var passSpecial=false;
 var maxPassLength=40;
+// Assignment Code
+var generateBtn = document.querySelector("#generate");
+// Add event listener to generate button
+generateBtn.addEventListener("click", generatePassword);
+
 
 init();
 
@@ -40,14 +45,21 @@ function updatePassRequirements(obj){
     passSpecial=obj.checked;
   }
 
-// -------------------------------------------------------------
-// --         sanityCheck()                                   --
-// --                   Runs when the user changes one of     --
-// --                   the options for password generation   --
-// --                   (Called from the inputs in index.html)--
-// -------------------------------------------------------------
+  // Make sure that this will result in a possible password
   sanityCheck();
+ 
+  // Change the text in the #password textarea to reflect the new parameters
+  updateUIDisplay();
+}
 
+// -------------------------------------------------------------
+// --    updateUIDisplay()                                    --
+// --               Change the text in the #password          --
+// --               textarea to reflect the new               --
+// --               parameters                                --
+// --               (called from updatePassRequirements())    --
+// -------------------------------------------------------------
+function updateUIDisplay(){
     // The default password text is a message that describe the password constraints
     // We have to store it as an array so that we can figure out which element is the
     // penultimate one and then add the word "and" after it. Ugh.
@@ -73,7 +85,8 @@ function updatePassRequirements(obj){
 // -------------------------------------------------------------
 // --    generateRandomCharacter()                            --
 // --               Returns a random unicode value based      --
-// --               on the user's preferences.                --     
+// --               on the user's preferences.                --  
+// --               (Called from generatePassword())          --
 // -------------------------------------------------------------
 function generateRandomCharacter() {
 
@@ -116,16 +129,29 @@ function generateRandomCharacter() {
 }
 
 
+// -------------------------------------------------------------
+// --      generatePassword()                                 --
+// --            Calls generateRandomCharacter() until we get --
+// --            passLength characters in our password.       --
+// --            (Called from click on generateBtn)           --
+// -------------------------------------------------------------
 function generatePassword(){
-  passChar=generateRandomCharacter();
-  console.log(passChar);
-  document.querySelector("#password").value=String.fromCharCode(passChar);
-
+  var finalPassword="";
+  for (let i=0;i<passLength; i++){
+    var passChar=generateRandomCharacter();
+    finalPassword+=String.fromCharCode(passChar);    
+  }
+  document.querySelector("#password").value=finalPassword;
 
 }
 
 
-
+// -------------------------------------------------------------
+// --         sanityCheck()                                   --
+// --                   Checks to make sure that the user is  --
+// --                   requesting a possible password        --
+// --                   (Called from updatePassRequirements())--
+// -------------------------------------------------------------
 function sanityCheck(){
   if(!passLowerCase && !passUpperCase && !passNumeric && !passSpecial){
     // We can't have a password without anything in it!
@@ -152,10 +178,4 @@ function sanityCheck(){
 
 
 
-// Assignment Code
-var generateBtn = document.querySelector("#generate");
 
-
-
-// Add event listener to generate button
-generateBtn.addEventListener("click", generatePassword);
