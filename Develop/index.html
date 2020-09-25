@@ -46,7 +46,7 @@
                 <textarea class="form-control" readonly id="password" placeholder="A Password of Length 8" aria-label="Generated Password"></textarea>
             </div>
             <div class="row-12">
-                <button id="generate" class="btn border m-1">Generate Password</button>
+                <button id="generate" class="btn border m-1" data-toggle="modal" data-target="#dialogueBox" >Generate Password</button>
             </div>
           </div>
           <div class="card-footer">
@@ -79,6 +79,20 @@
         </div>
       </div>
 
+    </div>
+    <div class="modal" tabindex="-1" role="dialog" id="dialogueBox"> 
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+          </div>
+          <div class="modal-body">
+            <p>Password copied to clipboard.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   <script src="../script/script.js"></script>

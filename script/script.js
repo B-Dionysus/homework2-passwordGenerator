@@ -142,7 +142,8 @@ function generatePassword(){
     finalPassword+=String.fromCharCode(passChar);    
   }
   document.querySelector("#password").value=finalPassword;
-
+  document.querySelector("#password").select();
+  document.execCommand('copy');
 }
 
 
