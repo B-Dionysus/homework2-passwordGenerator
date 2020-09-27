@@ -34,16 +34,16 @@
     <div class="row mt-3 ml-auto">
       <div class="col-7">
         <div class="card">
-          <div class="card-header">
+          <div class="card-header"  >
             <h2>Generate a Password</h2>
           </div>
           <!-- WHEN prompted for the length of the password
            THEN I choose a length of at least 8 characters and no more than 128 characters
             WHEN prompted for character types to include in the password
            THEN I choose lowercase, uppercase, numeric, and/or special characters -->
-          <div class="card-body">
-            <div class="row"-12>
-                <textarea class="form-control" readonly id="password" placeholder="A Password of Length 8" aria-label="Generated Password"></textarea>
+          <div class="card-body" >
+            <div class="row" id="passArea" onmouseenter="showPass();" onmouseout="hidePass();"> 
+                <textarea class="form-control" readonly id="password" placeholder="A password of length 8 and with lowercase characters." aria-label="Generated Password"></textarea>
             </div>
             <div class="row-12">
                 <button id="generate" class="btn border m-1" data-toggle="modal" data-target="#dialogueBox" >Generate Password</button>
@@ -86,7 +86,7 @@
           <div class="modal-header">
           </div>
           <div class="modal-body">
-            <p>Password copied to clipboard.</p>
+            <p>Password copied to clipboard. Move your mouse over the text to reveal your new password!</p>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

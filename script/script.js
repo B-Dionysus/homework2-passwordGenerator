@@ -5,10 +5,13 @@ var passUpperCase=false;
 var passNumeric=false;
 var passSpecial=false;
 var maxPassLength=40;
+var finalPassword="";
+var dummyText="";
 // Assignment Code
 var generateBtn = document.querySelector("#generate");
+var passDisplay = document.querySelector("#passArea");
+
 // Add event listener to generate button
-generateBtn.addEventListener("click", generatePassword);
 
 
 init();
@@ -19,7 +22,16 @@ init();
 // --                   Runs when the page is loaded          --
 // -------------------------------------------------------------
 function init(){
-  updatePassRequirements(document.getElementById("length-input"));
+  
+  generateBtn.addEventListener("click", generatePassword);
+
+  // Somehow I'm not able to assign onmouseover in javascript
+  // so for now I'll just add it in the html. The following
+  // lines don't seem to be working:
+  //passDisplay.addEventListener("onmouseenter", showPass);
+ // document.getElementById("passArea").onmouseover="alert('hi');";
+
+updatePassRequirements(document.getElementById("length-input"));
 }
 
 // -------------------------------------------------------------
@@ -81,6 +93,30 @@ function updateUIDisplay(){
     for(m of msg) output+=m;
   document.getElementById("password").value=output;
 }
+// -------------------------------------------------------------
+// --    copyToClipboard()                                    --
+// --               Creates a div waaaaay off screen, displays--
+// --               the cleartext password, copies it to the  --
+// --               clipbaord, and then kills it.             --
+// --               (Called from generatePassword())          --
+// -------------------------------------------------------------
+function copyToClipboard(){
+  // It's a little tricky to copy the password to the clipboard without
+  // displaying it on screen. These folks suggested just putting it way off
+  // the screen instead:
+  // https://stackoverflow.com/questions/31593297/using-execcommand-javascript-to-copy-hidden-text-to-clipboard
+
+  var passElement=document.createElement("input");
+  passElement.style="position:absolute; left:-1000px; top:-1000px;";
+  passElement.value=finalPassword;
+  // My understanding is that until we call appendChild(), our new element 
+  // isn't a part of the DOM, and doesn't have a parent at all
+  document.body.appendChild(passElement);
+  passElement.select();
+  document.execCommand('copy');
+
+}
+
 
 // -------------------------------------------------------------
 // --    generateRandomCharacter()                            --
@@ -127,7 +163,30 @@ function generateRandomCharacter() {
 
   return randChar;
 }
-
+// -------------------------------------------------------------
+// --      showPass()                                         --
+// --            Displays the cleartext password              --
+// --            (Called from onMouseOver on #password)           --
+// -------------------------------------------------------------
+function showPass(){
+  var currentDisplayText=document.querySelector("#password");
+  if(currentDisplayText.value.charAt(0)==="*"){
+    currentDisplayText.value=finalPassword;
+  }
+}
+// -------------------------------------------------------------
+// --      hidePass()                                         --
+// --            Hides the cleartext password              --
+// --            (Called from onMouseOut on #password)           --
+// -------------------------------------------------------------
+function hidePass(){
+  // Thanks again to Sathanus, on discord, for the suggestion of keeping
+  // the password hidden 
+  var currentDisplayText=document.querySelector("#password");
+  if(currentDisplayText.value.split(" ")[1]!="password")
+    document.querySelector("#password").value=dummyText;
+    ny2qX*RH
+}
 
 // -------------------------------------------------------------
 // --      generatePassword()                                 --
@@ -136,15 +195,22 @@ function generateRandomCharacter() {
 // --            (Called from click on generateBtn)           --
 // -------------------------------------------------------------
 function generatePassword(){
-  var finalPassword="";
+  finalPassword="";
+  dummyText="";
   for (let i=0;i<passLength; i++){
     var passChar=generateRandomCharacter();
     finalPassword+=String.fromCharCode(passChar);    
+    dummyText+="*";
   }
-  document.querySelector("#password").value=finalPassword;
-  document.querySelector("#password").select();
-  document.execCommand('copy');
+  // My classmate who goes by "Sathanus" on discord suggested only displaying the cleartext
+  // password when the user mouses over it, so until then we'll just have stars:
+  
+  document.querySelector("#password").value=dummyText;
+  copyToClipboard();
 }
+
+
+
 
 
 // -------------------------------------------------------------
